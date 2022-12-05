@@ -1,12 +1,7 @@
 .form-container {
-        position: absolute;
-        top: 50%;
-        left: 75%;
-        transform: translate(-50%, -50%);
-        width: 50%;
+        width: 100%;
         display: grid;
         grid-template-columns: 1fr;
-        z-index: 5;
         transition: 1s 0.7s ease-in-out;
 }
 
@@ -17,7 +12,5 @@
         flex-direction: column;
         padding: 0 5rem;
         overflow: hidden;
-        grid-column: 1/2;
-        grid-row: 1 /2;
         transition: all 0.2s 0.7s;
 }
