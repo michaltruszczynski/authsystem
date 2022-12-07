@@ -29,4 +29,22 @@ export const menuData = [
       cName: "nav-link",
       icon: null,
    },
+   {
+      title: "Service",
+      url: "/",
+      cName: "nav-link",
+      icon: null,
+   },
+   {
+      title: "SignUp",
+      url: "/",
+      cName: "nav-link",
+      icon: null,
+   },
+   {
+      title: "Service",
+      url: "/",
+      cName: "nav-link",
+      icon: null,
+   },
 ];

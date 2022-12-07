@@ -22,6 +22,7 @@ const Navbar = () => {
                      <a className={styles[`${item.cName}`]} href={item.url}>
                         {item.title}
                      </a>
+                  
                   </li>
                );
             })}
