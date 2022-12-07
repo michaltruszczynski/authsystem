@@ -1,11 +1,12 @@
 import LoginPage from "./pages/LoginPage/LoginPage";
-
+import Layout from "./components/Layout/Layout";
 function App() {
-  return (
-    <main>
-      <LoginPage />
-    </main>
-  );
+   return (
+      <Layout>
+         {/* text */}
+         <LoginPage />
+      </Layout>
+   );
 }
 
 export default App;
