@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import FormContainer from "../../components/forms/FormContainer/FormContainer";
 import Input from "../../components/forms/Input/Input";
 import Heading from "../../components/forms/Heading/Heading";
@@ -54,14 +55,16 @@ const Signup = () => {
                   validators={[{ check: compareStrings("password"), message: "Passwords does not match." }]}
                   showError={"BASIC"}
                />
-               <Button text="LOGIN" />
+               <Button text="SIGNUP" />
                <GoogleLogin />
             </FormContainer>
             <div className={styles["panel"]}>
                <div className={styles["content"]}>
                   <h1 className={styles["content__heading"]}>Already have an account?</h1>
                   <p className={styles["content__text"]}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum laboriosam ad deleniti.</p>
-                  <button className={styles["btn"]}>Sign in</button>
+                  <NavLink to={"/login"} className={styles["btn"]}>
+                     Login
+                  </NavLink>
                </div>
                <img src={image} alt="" className={styles["image"]} />
             </div>

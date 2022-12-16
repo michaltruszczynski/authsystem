@@ -13,7 +13,6 @@ export const FormContext = createContext();
 
 const FormContainer = ({ children }) => {
    const [formState, setFormState] = useState(initialState);
-   console.log(formState);
 
    useEffect(() => {
       setFormState((state) => {
@@ -46,7 +45,6 @@ const FormContainer = ({ children }) => {
       const newErrorsObj = {};
       inputNames.forEach((nameKey) => {
          const validatorsArr = validators[nameKey];
-         console.log(validateInput(validatorsArr, inputData[nameKey], inputData));
          newErrorsObj[nameKey] = validateInput(validatorsArr, inputData[nameKey], inputData);
       });
       return newErrorsObj;

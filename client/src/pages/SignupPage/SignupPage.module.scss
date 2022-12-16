@@ -29,6 +29,10 @@
 }
 
 .content {
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         &__heading {
                 color: #fff;
                 font-weight: 600;
@@ -49,15 +53,23 @@
         height: 41px;
         font-weight: 600;
         font-size: 0.8rem;
+        display: block;
         background: none;
         outline: none;
         border-radius: 49px;
         color: #fff;
         text-transform: uppercase;
-        margin: 0;
+        text-decoration: none;
+        margin: 0 auto;
         border: 2px solid #fff;
         cursor: pointer;
         transition: 0.5s;
+        text-align: center;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
 
         &:hover {
                 background-color: #4d84e2;
