@@ -15,8 +15,8 @@ const LoginPage = () => {
          <div className={styles['inner-container']}>
             <FormContainer>
                <Heading heading={"Sign in"} />
-               <Input inputType={"EMAIL"} placeholder="Email" />
-               <Input inputType={"PASSWORD"} placeholder="Password" />
+               <Input inputType={"EMAIL"} placeholder="Email" name="email" />
+               <Input inputType={"PASSWORD"} placeholder="Password" name="password" />
                <Button text="LOGIN" />
                <GoogleLogin />
             </FormContainer>

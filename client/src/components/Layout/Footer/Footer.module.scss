@@ -1,7 +1,8 @@
+@import "../../../abstracts/index";
+
 .footer {
-        background-color: #06283d;
-        color: rgba(240, 240, 240, 0.8);
-        // border-top: 2px solid rgb(230, 230, 230);
+        background-color: $footerBackgroundColor;
+        color: $footerFontColor;
 }
 
 .container {
@@ -15,7 +16,6 @@
 .logo {
         display: flex;
         flex-direction: column;
-        // justify-content: center;
         align-items: center;
 
         &__heading {
@@ -24,7 +24,7 @@
 
         &__icon {
                 font-size: 3rem;
-                color: #e47373;
+                color: $logoIconColor;
         }
 }
 

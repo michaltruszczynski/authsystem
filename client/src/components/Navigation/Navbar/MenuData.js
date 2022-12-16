@@ -25,25 +25,7 @@ export const menuData = [
    },
    {
       title: "SignUp",
-      url: "/",
-      cName: "nav-link",
-      icon: null,
-   },
-   {
-      title: "Service",
-      url: "/",
-      cName: "nav-link",
-      icon: null,
-   },
-   {
-      title: "SignUp",
-      url: "/",
-      cName: "nav-link",
-      icon: null,
-   },
-   {
-      title: "Service",
-      url: "/",
+      url: "/signup",
       cName: "nav-link",
       icon: null,
    },

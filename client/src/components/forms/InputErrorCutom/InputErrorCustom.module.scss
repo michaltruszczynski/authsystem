@@ -1,0 +1,45 @@
+@import "../../../abstracts/index";
+
+.container {
+        min-height: 1.25rem;
+}
+
+.validation {
+        &__heading {
+                font-size: 0.8125rem;
+                color: $main-dark-blue;
+                height: 1.25rem;
+                margin: 0.125rem 0;
+
+                &_error {
+                        color: $inputErrorFontColor;
+                }
+        }
+
+        &__list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+        }
+
+        &__item {
+                font-size: 0.8125rem;
+                display: flex;
+                align-items: center;
+                color: $inputErrorFontColor;
+                transition: color 0.3s;
+
+                &--valid {
+                        color: $light-green;
+                }
+        }
+
+        &__icon {
+                margin-right: 0.1rem;
+                font-weight: 600;
+        }
+
+        &__message {
+                white-space: nowrap;
+        }
+}
