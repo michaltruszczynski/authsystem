@@ -3,11 +3,16 @@ import styles from "./Button.module.scss";
 
 import { FormContext } from "../FormContainer/FormContainer";
 
-const Button = ({ text }) => {
-   const { isFormValid } = useContext(FormContext);
+const Button = ({ text, onClick }) => {
+   const { data, isFormValid } = useContext(FormContext);
+
+   const clickHandler = (e) => {
+      e.preventDefault();
+      onClick(data)
+   }
 
    return (
-      <button className={styles.button} disabled={!isFormValid} type="submit">
+      <button className={styles.button} disabled={!isFormValid} type="submit" onClick={clickHandler}>
          {text}
       </button>
    );

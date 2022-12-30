@@ -7,11 +7,27 @@ import Button from "../../components/forms/Button/Button";
 import GoogleLogin from "../../components/forms/GoogleLogin/GoogleLogin";
 import image from "../../images/signup.png";
 
+import { useRegisterMutation } from "../../features/auth/authApiSlice";
+
 import styles from "./SignupPage.module.scss";
 
 import { length, containNumber, containSpecialChar, containCapitalLetter, email, compareStrings } from "../../utility/validators";
 
 const Signup = () => {
+   const [register, { isLoading }] = useRegisterMutation();
+
+   const signupHandler = async (data) => {
+      console.log(data);
+      const { email, password } = data;
+      console.log(email, password);
+
+      try {
+         const response = await register({ user: email, pwd: password });
+         console.log(response);
+      } catch (err) {
+         console.log(err);
+      }
+   };
    return (
       <div className={styles["container"]}>
          <div className={styles["inner-container"]}>
@@ -55,7 +71,7 @@ const Signup = () => {
                   validators={[{ check: compareStrings("password"), message: "Passwords does not match." }]}
                   showError={"BASIC"}
                />
-               <Button text="SIGNUP" />
+               <Button text="SIGNUP" onClick={signupHandler} />
                <GoogleLogin />
             </FormContainer>
             <div className={styles["panel"]}>
