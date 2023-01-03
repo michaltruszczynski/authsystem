@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import FormContainer from "../../components/forms/FormContainer/FormContainer";
 import Input from "../../components/forms/Input/Input";
@@ -8,6 +9,7 @@ import GoogleLogin from "../../components/forms/GoogleLogin/GoogleLogin";
 import image from "../../images/signup.png";
 
 import { useRegisterMutation } from "../../features/auth/authApiSlice";
+import { setMessage } from "../../features/message/messageSlice";
 
 import styles from "./SignupPage.module.scss";
 
@@ -15,6 +17,7 @@ import { length, containNumber, containSpecialChar, containCapitalLetter, email,
 
 const Signup = () => {
    const [register, { isLoading }] = useRegisterMutation();
+   const dispatch = useDispatch();
 
    const signupHandler = async (data) => {
       console.log(data);
@@ -24,6 +27,7 @@ const Signup = () => {
       try {
          const response = await register({ user: email, pwd: password });
          console.log(response);
+         dispatch(setMessage({message: "You have been successfully registered.", messageDetails: ['Please signin.']}))
       } catch (err) {
          console.log(err);
       }

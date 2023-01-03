@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { menuData } from "./MenuData";
 
-import Backdrop from "../../UI/Backdrop/Backdrop";
-
 import useScrollLock from "../../../hooks/useScrollLock";
 
 import styles from "./Navbar.module.scss";
@@ -24,8 +22,8 @@ const Navbar = () => {
 
    return (
       <>
-         <Backdrop show={isOpen} onClick={closeMenuHandler} />
-         <nav className={styles["NavbarItems"]}>
+         <div className={isOpen ? `${styles['backdrop']} ${styles["backdrop--visible"]}` : `${styles['backdrop']}`} onClick={closeMenuHandler}></div>
+         <nav className={styles["navbar-items"]}>
             <div className={styles["logo"]}>
                <h1 className={styles["logo__heading"]}>AuthSystem</h1>
                <i className={`fa-solid fa-user-shield ${styles["logo__icon"]}`}></i>

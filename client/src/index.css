@@ -26,3 +26,8 @@ input, button {
   display: flex;
   flex-direction: column;
 }
+
+/* #modal {
+  position: absolute;
+  top: 0;
+} */
