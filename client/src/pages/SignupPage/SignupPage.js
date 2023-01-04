@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import FormContainer from "../../components/forms/FormContainer/FormContainer";
 import Input from "../../components/forms/Input/Input";
 import Heading from "../../components/forms/Heading/Heading";
@@ -9,7 +9,9 @@ import GoogleLogin from "../../components/forms/GoogleLogin/GoogleLogin";
 import image from "../../images/signup.png";
 
 import { useRegisterMutation } from "../../features/auth/authApiSlice";
-import { setMessage } from "../../features/message/messageSlice";
+import { setMessage, showSpinner, closeSpinner } from "../../features/message/messageSlice";
+
+import { getErrorMessage } from "../../utility/messages";
 
 import styles from "./SignupPage.module.scss";
 
@@ -18,18 +20,23 @@ import { length, containNumber, containSpecialChar, containCapitalLetter, email,
 const Signup = () => {
    const [register, { isLoading }] = useRegisterMutation();
    const dispatch = useDispatch();
+   const navigate = useNavigate();
 
-   const signupHandler = async (data) => {
+   const signupHandler = async (data, setInputValue) => {
       console.log(data);
-      const { email, password } = data;
-      console.log(email, password);
-
+      const { name, email, password, confirmPassword } = data;
+      console.log(name, email, password, confirmPassword);
+      dispatch(showSpinner())
       try {
-         const response = await register({ user: email, pwd: password });
+         const response = await register({ name, email, password, confirmPassword }).unwrap();
          console.log(response);
-         dispatch(setMessage({message: "You have been successfully registered.", messageDetails: ['Please signin.']}))
+         dispatch(closeSpinner());
+         dispatch(setMessage({ message: "You have been successfully registered.", messageDetails: ["Please signin."] }));
+         navigate("/login");
       } catch (err) {
-         console.log(err);
+         dispatch(closeSpinner());
+         const {errorMessage, errorDetails} = getErrorMessage(err)
+         dispatch(setMessage({ message: errorMessage, messageDetails: errorDetails }));
       }
    };
    return (
@@ -71,7 +78,7 @@ const Signup = () => {
                <Input
                   inputType={"PASSWORD"}
                   placeholder="Confirm Password"
-                  name="confirmpassword"
+                  name="confirmPassword"
                   validators={[{ check: compareStrings("password"), message: "Passwords does not match." }]}
                   showError={"BASIC"}
                />

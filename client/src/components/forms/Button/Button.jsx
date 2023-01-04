@@ -4,11 +4,11 @@ import styles from "./Button.module.scss";
 import { FormContext } from "../FormContainer/FormContainer";
 
 const Button = ({ text, onClick }) => {
-   const { data, isFormValid } = useContext(FormContext);
+   const { data, isFormValid, setInputValue } = useContext(FormContext);
 
    const clickHandler = (e) => {
       e.preventDefault();
-      onClick(data)
+      onClick(data, setInputValue)
    }
 
    return (

@@ -10,7 +10,8 @@ const InputErrorCustom = ({ name, touched, focus }) => {
 
    if (!errors[name]) return;
 
-   const { isValid, errorMessages } = errors[name];
+   const { isValid } = errors[name];
+   const errorMessages = errors[name]?.errorMessages || [];
 
    const validationRulesMsg = errorMessages.map((validationRule) => {
       let validationItemClass = [styles["validation__item"]];

@@ -13,22 +13,29 @@ export const FormContext = createContext();
 
 const FormContainer = ({ children }) => {
    const [formState, setFormState] = useState(initialState);
-
+   console.log(formState);
    useEffect(() => {
+      console.log('FormContainer, useEffect')
       setFormState((state) => {
          const errors = validateStateInputData(state.data, state.validators);
-         return {
+
+         const updatedState = {
             ...state,
             errors: {
                ...state.errors,
                ...errors,
             },
-         };
+         }
+         const isFormValid = Object.entries(updatedState.errors).reduce((isFormValid, [name, input]) => {
+            return isFormValid && input.isValid;
+         }, true);
+
+         return { ...updatedState, isFormValid: isFormValid };
       });
    }, []);
 
    const validateInput = (validators = [], value, formInputValues) => {
-      if (!validators.length) return [];
+      if (!validators.length) return {isValid: true, errorMessages: []};
       const errorMessages = [];
       let isValid = true;
       validators.forEach((validator) => {
@@ -60,7 +67,7 @@ const FormContainer = ({ children }) => {
             },
          };
 
-         const newErrorsObj = validateStateInputData(updatedStateInputsData.data,state.validators);
+         const newErrorsObj = validateStateInputData(updatedStateInputsData.data, state.validators);
 
          const updatedStateInputs = {
             ...updatedStateInputsData,

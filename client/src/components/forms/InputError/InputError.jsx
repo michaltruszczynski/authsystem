@@ -8,7 +8,8 @@ const InputError = ({ name, touched, focus }) => {
 
    if (!errors[name]) return;
 
-   const { isValid, errorMessages } = errors[name];
+   const { isValid } = errors[name];
+   const errorMessages = errors[name]?.errorMessages || [];
 
    let errorClasses = [styles["error__message"]];
 
