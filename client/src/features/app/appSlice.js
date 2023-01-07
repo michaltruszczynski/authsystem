@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const messageSlice = createSlice({
-   name: "message",
-   initialState: { message: "", messageDetails: [], showSpinner: true },
+export const appSlice = createSlice({
+   name: "app",
+   initialState: { message: "", messageDetails: [], showSpinner: false },
    reducers: {
       setMessage: (state, action) => {
          const { message, messageDetails } = action.payload;
@@ -22,10 +22,10 @@ export const messageSlice = createSlice({
    },
 });
 
-export const { setMessage, clearMessage, showSpinner, closeSpinner } = messageSlice.actions;
+export const { setMessage, clearMessage, showSpinner, closeSpinner } = appSlice.actions;
 
-export default messageSlice.reducer;
+export default appSlice.reducer;
 
-export const selectMessage = (state) => state.message.message;
-export const selectMessageDetails = (state) => state.message.messageDetails;
-export const selectShowSpinner = (state) => state.message.showSpinner;
+export const selectMessage = (state) => state.app.message;
+export const selectMessageDetails = (state) => state.app.messageDetails;
+export const selectShowSpinner = (state) => state.app.showSpinner;

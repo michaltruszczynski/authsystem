@@ -9,7 +9,7 @@ import GoogleLogin from "../../components/forms/GoogleLogin/GoogleLogin";
 import image from "../../images/signup.png";
 
 import { useRegisterMutation } from "../../features/auth/authApiSlice";
-import { setMessage, showSpinner, closeSpinner } from "../../features/message/messageSlice";
+import { setMessage, showSpinner, closeSpinner } from "../../features/app/appSlice";
 
 import { getErrorMessage } from "../../utility/messages";
 
@@ -18,15 +18,14 @@ import styles from "./SignupPage.module.scss";
 import { length, containNumber, containSpecialChar, containCapitalLetter, email, compareStrings } from "../../utility/validators";
 
 const Signup = () => {
-   const [register, { isLoading }] = useRegisterMutation();
+   const [register] = useRegisterMutation();
    const dispatch = useDispatch();
    const navigate = useNavigate();
 
    const signupHandler = async (data, setInputValue) => {
-      console.log(data);
       const { name, email, password, confirmPassword } = data;
-      console.log(name, email, password, confirmPassword);
-      dispatch(showSpinner())
+
+      dispatch(showSpinner());
       try {
          const response = await register({ name, email, password, confirmPassword }).unwrap();
          console.log(response);
@@ -35,10 +34,11 @@ const Signup = () => {
          navigate("/login");
       } catch (err) {
          dispatch(closeSpinner());
-         const {errorMessage, errorDetails} = getErrorMessage(err)
+         const { errorMessage, errorDetails } = getErrorMessage(err);
          dispatch(setMessage({ message: errorMessage, messageDetails: errorDetails }));
       }
    };
+
    return (
       <div className={styles["container"]}>
          <div className={styles["inner-container"]}>

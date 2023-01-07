@@ -1,8 +1,6 @@
-import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCredentils } from "../../features/auth/authSlice";
-import { useLoginMutation } from "../../features/auth/authApiSlice";
 
 import FormContainer from "../../components/forms/FormContainer/FormContainer";
 import Input from "../../components/forms/Input/Input";
@@ -10,26 +8,39 @@ import Heading from "../../components/forms/Heading/Heading";
 import Button from "../../components/forms/Button/Button";
 import GoogleLogin from "../../components/forms/GoogleLogin/GoogleLogin";
 
-import image from "../../images/login.svg";
+import { setCredentials } from "../../features/auth/authSlice";
+import { useLoginMutation } from "../../features/auth/authApiSlice";
+import { setMessage, showSpinner, closeSpinner } from "../../features/app/appSlice";
 
+import { getErrorMessage } from "../../utility/messages";
+
+import image from "../../images/login.svg";
 import styles from "./LoginPage.module.scss";
 
 import { email, required } from "../../utility/validators";
 
 const LoginPage = () => {
-   const [login, { isLoading }] = useLoginMutation();
+   const [login] = useLoginMutation();
    const dispatch = useDispatch();
+   const navigate = useNavigate();
 
-   const loginHandler = async (data) => {
-      console.log(data);
+   const loginHandler = async (data, setInputValue) => {
       const { email, password } = data;
-      console.log(email, password);
 
+      dispatch(showSpinner());
       try {
-         const response = await login({ user: email, pwd: password });
+         const response = await login({ user: email, pwd: password }).unwrap();
          console.log(response);
+         const {accessToken, roles} = response;
+         dispatch(closeSpinner());
+         dispatch(setCredentials({ user: email, accessToken, roles }))
+         dispatch(setMessage({ message: "You have logged in. Welcome :)", messageDetails: [] }));
+         navigate("/");
       } catch (err) {
-         console.log(err);
+         console.log(err)
+         dispatch(closeSpinner());
+         const { errorMessage, errorDetails } = getErrorMessage(err);
+         dispatch(setMessage({ message: errorMessage, messageDetails: errorDetails }));
       }
    };
 

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Portal from "../Portal/Portal";
 import Backdrop from "../Backdrop/Backdrop";
 
-import { clearMessage } from "../../../features/message/messageSlice";
-import { selectMessage, selectMessageDetails } from "../../../features/message/messageSlice";
+import { clearMessage } from "../../../features/app/appSlice";
+import { selectMessage, selectMessageDetails } from "../../../features/app/appSlice";
 
 import styles from "./Modal.module.scss";
 

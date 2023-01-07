@@ -1,11 +1,11 @@
 import React from "react";
 
-import styles from './Home.module.scss';
+import styles from './Admin.module.scss';
 
 const Home = () => {
    return (
       <section className={styles['container']}>
-         <h1>Home</h1>
+         <h1>Admin Page</h1>
       </section>
    );
 };

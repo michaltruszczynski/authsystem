@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Portal from "../Portal/Portal";
 import Backdrop from "../Backdrop/Backdrop";
 
-import { selectShowSpinner } from "../../../features/message/messageSlice";
+import { selectShowSpinner } from "../../../features/app/appSlice";
 
 import styles from "./Spinner.module.scss";
 
