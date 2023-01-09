@@ -1,26 +1,18 @@
 import React from "react";
+import { getGoogleUrl } from "../../../utility/getGoogleUrl";
 
 import styles from "./GoogleLogin.module.scss";
+import googleImg from "../../../images/google.svg";
 
 const GoogleLogin = () => {
    return (
-      <>
-         <p className={styles['social-text']}>Or sign in with social platform</p>
-         <div className={styles['social-media']}>
-            <a href="/" className={styles['social-icon']}>
-               <i className="fab fa-facebook-f"></i>
-            </a>
-            <a href="/" className={styles['social-icon']}>
-               <i className="fab fa-twitter"></i>
-            </a>
-            <a href="/" className={styles['social-icon']}>
-               <i className="fab fa-google"></i>
-            </a>
-            <a href="/" className={styles['social-icon']}>
-               <i className="fab fa-linkedin-in"></i>
-            </a>
-         </div>
-      </>
+      <div className={styles["social"]}>
+         <p className={styles["social__heading"]}>Or sign in with social platform</p>
+         <a href={getGoogleUrl("/")} className={styles["social__link"]}>
+            <img className={styles["google-img"]} src={googleImg} alt="googleImg" />
+            <span className={styles["social__text"]}>Sign din with Google</span>
+         </a>
+      </div>
    );
 };
 

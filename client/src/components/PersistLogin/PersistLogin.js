@@ -37,14 +37,16 @@ console.log(isLoading)
       return () => (effectRan.current = true);
    }, []);
 
-   let content = null;
+   let content = <Outlet />;
    if (!persist) {
       content = <Outlet />;
    } else if (isLoading) {
       content = <p>Loading!!</p>;
-   } else if (isError) {
-      content = <p>Please login again.</p>;
-   } else if (isSuccess && trueSuccess) {
+   } 
+   else if (isError) {
+      content = <Outlet />;
+   }
+    else if (isSuccess && trueSuccess) {
       content = <Outlet />;
    } else if (accessToken && isUninitialized) {
       content = <Outlet />;

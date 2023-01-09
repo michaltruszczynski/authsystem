@@ -28,3 +28,39 @@
         color: #4481eb;
         border-color: #4481eb;
 }
+
+.google-icon {
+        height: 2rem;
+}
+
+.social {
+        &__heading {
+                padding: 0.7rem 0;
+                font-size: 1rem;
+                text-align: center;
+        }
+
+        &__link {
+                display: flex;
+                box-sizing: border-box;
+                justify-content: center;
+                align-items: center;
+                text-decoration: none;
+                font-family: inherit;
+             
+                font-weight: 500;
+                color: #fff;
+                background-color: #5995fd;
+                padding: 0.9rem 1.8rem;
+
+                border-radius: 5px;
+        }
+
+        &__text {
+                margin-left: 5px;
+        }
+}
+.google-img {
+        height: 2rem;
+        width: auto;
+}

@@ -20,22 +20,25 @@ const ROLES = {
 function App() {
    return (
       <Routes>
-         <Route element={<PersistLogin />}>
          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="signup" element={<SignupPage />} />
-            <Route path="editor" element={<Editor />} />
-            <Route path="unauthorized" element={<Unauthorized />} />
-            
+            <Route element={<PersistLogin />}>
+               <Route index element={<Home />} />
+               <Route path="login" element={<LoginPage />} />
+               <Route path="signup" element={<SignupPage />} />
+               <Route path="unauthorized" element={<Unauthorized />} />
+
+               <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Editor]} />}>
+                  <Route path="editor" element={<Editor />} />
+               </Route>
+
                <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
                   <Route path={"admin"} element={<Admin />} />
                </Route>
+
                <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Editor]} />}>
                   <Route path={"editor"} element={<Editor />} />
                </Route>
-            
-         </Route>
+            </Route>
          </Route>
       </Routes>
    );

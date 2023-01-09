@@ -8,7 +8,7 @@ const RequireAuth = ({ allowedRoles }) => {
    const location = useLocation();
    const accessToken = useSelector(selectAccessToken);
    const userRoles = useSelector(selectUserRoles);
-
+console.log('RequireAuth')
    const isUserAllowed = Boolean(userRoles.filter((userRole) => allowedRoles.includes(userRole)).length);
 
    return isUserAllowed ? (
