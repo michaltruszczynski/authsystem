@@ -1,0 +1,31 @@
+@import "../../../abstracts/index";
+
+.button {
+        // text-decoration: none;
+        color: $navFontColor;
+        padding: 0.7rem 1rem;
+        transition: all 0.2s ease;
+        font-size: 1.2rem;
+        min-width: 100px;
+        background-color: transparent;
+        border: 0;
+        font-family: inherit;
+
+        &:hover {
+                background-color: $navHooverBgColor;
+                border-radius: 4px;
+        }
+}
+
+@media screen and (max-width: 850px) {
+        .button {
+                display: block;
+                padding: 2rem 0;
+                color: $navFontColor;
+                width: 100%;
+
+                &:hover {
+                        background-color: $navHooverBgColorMob;
+                }
+        }
+}

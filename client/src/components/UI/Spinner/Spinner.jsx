@@ -10,7 +10,7 @@ import styles from "./Spinner.module.scss";
 
 const Spinner = () => {
    const showSpinner = useSelector(selectShowSpinner);
-   console.log(showSpinner);
+
    return showSpinner ? (
       <Portal targetContainer={"spinner"}>
          <Backdrop show={true} onClick={() => {}}>

@@ -29,11 +29,11 @@ const LoginPage = () => {
 
       dispatch(showSpinner());
       try {
-         const response = await login({ user: email, pwd: password }).unwrap();
+         const response = await login({ email: email, password: password }).unwrap();
          console.log(response);
          const {accessToken, roles} = response;
          dispatch(closeSpinner());
-         dispatch(setCredentials({ user: email, accessToken, roles }))
+         dispatch(setCredentials({ email, accessToken, roles }))
          dispatch(setMessage({ message: "You have logged in. Welcome :)", messageDetails: [] }));
          navigate("/");
       } catch (err) {
