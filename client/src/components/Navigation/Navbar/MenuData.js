@@ -14,7 +14,7 @@ export const menuData = [
    },
    {
       title: "User list",
-      url: "/admin",
+      url: "/userlist",
       cName: "nav-link",
       icon: null,
       allowedRoles: [ROLES.User, ROLES.Admin, ROLES.Editor],

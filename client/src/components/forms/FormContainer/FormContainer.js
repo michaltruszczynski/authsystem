@@ -13,9 +13,9 @@ export const FormContext = createContext();
 
 const FormContainer = ({ children }) => {
    const [formState, setFormState] = useState(initialState);
-   console.log(formState);
+   
    useEffect(() => {
-      console.log('FormContainer, useEffect')
+      
       setFormState((state) => {
          const errors = validateStateInputData(state.data, state.validators);
 
