@@ -1557,3 +1557,6 @@
 20230117	20:34:24	52299af2-8555-4a83-a6af-348e43a97acb	GET	http://localhost:3000	/refresh
 20230117	20:34:24	6b7f1d32-17bb-4b65-8bb1-27ec6bbe540f	OPTIONS	http://localhost:3000	/users/63c6b57b346c10b12e812543
 20230117	20:34:24	1cdce281-e549-4ae1-ade9-c3c639e958f5	GET	http://localhost:3000	/users/63c6b57b346c10b12e812543
+20230118	14:56:02	c156cd02-b0da-484e-81b5-3845f253c343	GET	http://localhost:3000	/refresh
+20230118	14:56:03	544531a1-621d-408a-8da9-e80599c9aec7	OPTIONS	http://localhost:3000	/users
+20230118	14:56:03	829c1adc-c2ef-4116-ad94-e105acbd0901	GET	http://localhost:3000	/users
