@@ -32,7 +32,8 @@ const options = [
 
 const UserDetails = () => {
    const [isEditing, setIsEditing] = useState(false);
-   const[selectValue, setSelectValue] = useState(options[0])
+   const[selectValue1, setSelectValue1] = useState([options[0]])
+   const[selectValue2, setSelectValue2] = useState(options[0])
    const { id } = useParams();
    console.log(id);
 
@@ -61,7 +62,10 @@ const UserDetails = () => {
                      <p>Email</p> <p>{user.email}</p>
                   </div>
                   <div>
-                     <Select options={options} value={selectValue} onChange={val => setSelectValue(val)} />
+                     <Select multiple options={options} value={selectValue1} onChange={val => setSelectValue1(val)} />
+                     <br />
+                     <Select options={options} value={selectValue2} onChange={val => setSelectValue2(val)} />
+                     
                   </div>
                </form>
             </div>

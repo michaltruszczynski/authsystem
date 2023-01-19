@@ -14,14 +14,26 @@ const Select = ({ multiple, value, onChange, options }) => {
       setIsOpen(false);
    };
 
+   const clearOptions = () => {
+      multiple ? onChange([]) : onChange(undefined);
+   };
+
    const clearOptionsHandler = (e) => {
       e.stopPropagation();
       e.preventDefault();
-      onChange(undefined);
+      clearOptions();
    };
 
    const selectOption = (option) => {
-      if (option !== value) onChange(option);
+      if (multiple) {
+         if (value.includes(option)) {
+            onChange(value.filter((o) => o !== option));
+         } else {
+            onChange([...value, option]);
+         }
+      } else {
+         if (option !== value) onChange(option);
+      }
    };
 
    const selectOptionHandler = (option) => (e) => {
@@ -30,16 +42,31 @@ const Select = ({ multiple, value, onChange, options }) => {
    };
 
    const isOptionSelected = (option) => {
-      return option === value;
+      return multiple ? value.includes(option) : option === value;
    };
 
    useEffect(() => {
       if (isOpen) setHighlightedIndex(0);
    }, [isOpen]);
 
+   const renderValueForMultiple = () => {
+      return value.map((v) => (
+         <button
+            key={v.value}
+            onClick={(e) => {
+               e.stopPropagation();
+               selectOption(v)
+            }}
+            className={styles['option-badge']}
+         >
+            {v.label}<span className={styles["remove-btn"]}>&times;</span>
+         </button>
+      ));
+   };
+
    return (
       <div onClick={openSelectHandler} onBlur={closeSelectHandler} tabIndex={0} className={styles["container"]}>
-         <span className={styles["value"]}>{value?.label}</span>
+         <span className={styles["value"]}>{multiple ? renderValueForMultiple() : value?.label}</span>
          <button onClick={clearOptionsHandler} className={styles["clear-btn"]}>
             &times;
          </button>
