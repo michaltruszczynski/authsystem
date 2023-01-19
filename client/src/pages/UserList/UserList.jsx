@@ -57,7 +57,7 @@ const UserList = () => {
                <div className={styles["none"]}>Actions</div>
                <div>
                   <span className={styles["role"]}>
-                     <NavLink to={`/edituser`} >View</NavLink>
+                     <NavLink to={`/edituser/${user._id}`} >View</NavLink>
                   </span>
                   <span className={[styles["role"], styles["role--mleft"]].join(" ")}>
                      <NavLink to={`/edituser/${user._id}`}>Edit</NavLink>

@@ -58,7 +58,7 @@ const PersistLogin = () => {
    //    console.log('[Persist login] 3')
    //    content = <Outlet />
    // }
-   // console.log('dupa', isUninitialized, isLoading, checkCompleted, effectRan.current, accessToken)
+   console.log('dupa', isUninitialized, isLoading, checkCompleted, effectRan.current, accessToken)
    if (!persist) {
       // persist: no
       console.log("no persist");
@@ -86,6 +86,8 @@ const PersistLogin = () => {
       console.log("token and uninit");
       console.log(isUninitialized);
       content = <Outlet />;
+   } else if(!accessToken && checkCompleted) {
+      content = <Outlet />
    }
 
    return content;
