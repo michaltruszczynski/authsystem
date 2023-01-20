@@ -8,7 +8,7 @@ import { showSpinner, closeSpinner, setMessage } from "../../../features/app/app
 import { getErrorMessage } from "../../../utility/messages";
 
 
-const LogoutButton = () => {
+const LogoutButton = ({onClick}) => {
    const dispatch = useDispatch();
    const [sendLogout] = useSendLogoutMutation();
 
@@ -24,6 +24,8 @@ const LogoutButton = () => {
          dispatch(closeSpinner())
          const { errorMessage, errorDetails } = getErrorMessage(err);
          dispatch(setMessage({ message: errorMessage, messageDetails: errorDetails }));
+      } finally {
+         onClick()
       }
    };
 

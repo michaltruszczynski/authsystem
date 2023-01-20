@@ -21,12 +21,15 @@ const deleteUser = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-    console.log(!req?.params?.id)
+   console.log(!req?.params?.id);
    if (!req?.params?.id) return res.status(400).json({ message: "User ID required" });
-   const user = await User.findOne({ _id: req.params.id }).exec();
+   const user = await User.findOne({ _id: req.params.id }, "_id name email roles").lean();
+   console.log(user);
    if (!user) {
       return res.status(204).json({ message: `User ID ${req.params.id} not found` });
    }
+
+   user.roles = Object.values(user.roles).filter(Boolean);
    res.json(user);
 };
 

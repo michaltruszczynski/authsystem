@@ -1,43 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { useGetUserQuery } from "../../features/users/userApiSlice";
 import Loading from "../../components/UI/Loading/Loading";
 import Select from "../../components/Select/Select";
+import Button from "./Button/Button";
 
 import styles from "./EditUser.module.scss";
 
-const options = [
+const USER_ROLE_OPTIONS = [
    {
-      label: "First",
-      value: 1,
+      label: "User",
+      value: 2001,
    },
    {
-      label: "Second",
-      value: 2,
+      label: "Editor",
+      value: 1984,
    },
    {
-      label: "Third",
-      value: 3,
-   },
-   {
-      label: "Fourth",
-      value: 4,
-   },
-   {
-      label: "Fifth",
-      value: 5,
+      label: "Administrator",
+      value: 5150,
    },
 ];
 
+const USER_ROLES = {
+   Admin: "Administrator",
+   Editor: "Editor",
+   User: "User",
+};
+
+const ROLES = {
+   User: 2001,
+   Editor: 1984,
+   Admin: 5150,
+};
+
 const UserDetails = () => {
    const [isEditing, setIsEditing] = useState(false);
-   const[selectValue1, setSelectValue1] = useState([options[0]])
-   const[selectValue2, setSelectValue2] = useState(options[0])
+   const [inputTouched, setInputTouched] = useState(false);
+   const [userRole, setUserRole] = useState(null);
+   const navigate = useNavigate();
    const { id } = useParams();
-   console.log(id);
 
-   const { data: user, isFetching, isLoading } = useGetUserQuery(id);
+   const { data: user, isFetching, isLoading, refetch } = useGetUserQuery(id);
+
+   const selectRoleChangeHandler = (val) => {
+      setUserRole(val);
+      if (!inputTouched) {
+         setInputTouched(true);
+      }
+   };
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -47,25 +59,59 @@ const UserDetails = () => {
       setIsEditing((prevState) => !prevState);
    };
 
-   if (isLoading) return <Loading />;
+   const backToUserList = () => {
+      navigate("/userlist");
+   };
+
+   const cancelEditing = () => {
+      setIsEditing(false);
+      refetch();
+   };
+
+   useEffect(() => {
+      const getRoleValue = (searchedRole) => {
+         const userRolesArray = Object.entries(ROLES);
+         const foundRole = userRolesArray.find((userRole) => userRole[1] === searchedRole);
+         return { label: USER_ROLES[foundRole[0]], value: foundRole[1] };
+      };
+
+      if (user) {
+         const { roles } = user;
+         setUserRole(getRoleValue(roles[0]));
+      }
+   }, [user]);
+
+   console.log("[UserDetails] ", user, isLoading, isFetching);
+
+   if (isLoading || isFetching) return <Loading />;
    if (user) {
-      console.log(user);
       return (
          <section className={styles["container"]}>
             <div className={styles["form-container"]}>
                <h1>Edit user</h1>
-               <form>
-                  <div>
-                     <p>Name</p> <p>{user.name}</p>
+               <form className={styles["form"]}>
+                  <div className={styles["form__data"]}>
+                     <div className={styles["form__label"]}>Name</div> <div className={styles["form__value"]}>{user.name}</div>
+                     <div className={styles["form__label"]}>Email</div>
+                     <div className={styles["form__value"]}>{user.email}</div>
+                     <div className={styles["form__label"]}>Roles</div>
+                     <Select options={USER_ROLE_OPTIONS} value={userRole} onChange={selectRoleChangeHandler} disabled={!isEditing} />
                   </div>
                   <div>
-                     <p>Email</p> <p>{user.email}</p>
+                  {(!userRole && inputTouched ) ? <p className={styles["error"]}>Error</p> : <p className={styles["error--non"]}>Error</p>}
                   </div>
-                  <div>
-                     <Select multiple options={options} value={selectValue1} onChange={val => setSelectValue1(val)} />
-                     <br />
-                     <Select options={options} value={selectValue2} onChange={val => setSelectValue2(val)} />
-                     
+                  <div className={styles["buttons-container"]}>
+                     {isEditing ? (
+                        <>
+                           <Button text={"Save"} onClick={handleIsEditing} disabled={!userRole} />
+                           <Button text={"Cancel"} onClick={cancelEditing} />
+                        </>
+                     ) : (
+                        <>
+                           <Button text={"Edit"} onClick={handleIsEditing} />
+                           <Button text={"Back to list"} onClick={backToUserList} />
+                        </>
+                     )}
                   </div>
                </form>
             </div>
@@ -75,3 +121,36 @@ const UserDetails = () => {
 };
 
 export default UserDetails;
+
+// const [selectValue1, setSelectValue1] = useState([options[0]]);
+// const [selectValue2, setSelectValue2] = useState(options[0]);
+// const options = [
+//    {
+//       label: "First",
+//       value: 1,
+//    },
+//    {
+//       label: "Second",
+//       value: 2,
+//    },
+//    {
+//       label: "Third",
+//       value: 3,
+//    },
+//    {
+//       label: "Fourth",
+//       value: 4,
+//    },
+//    {
+//       label: "Fifth",
+//       value: 5,
+//    },
+// ];
+
+{
+   /* <div>
+   <Select multiple options={options} value={selectValue1} onChange={(val) => setSelectValue1(val)} />
+   <br />
+   <Select options={options} value={selectValue2} onChange={(val) => setSelectValue2(val)} />
+</div>; */
+}

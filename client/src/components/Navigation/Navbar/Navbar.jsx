@@ -61,7 +61,7 @@ const Navbar = () => {
             <ul className={isOpen ? `${styles["navmenu"]} ${styles["navmenu--active"]}` : `${styles["navmenu"]}`}>
                {renderNavlinks()}
                {accessToken ? (
-                  <LogoutButton />
+                  <LogoutButton onClick={closeMobileMenu} />
                ) : (
                   <li key={"login"} onClick={closeMobileMenu}>
                      <NavLink className={styles["nav-link"]} to={"/login"}>

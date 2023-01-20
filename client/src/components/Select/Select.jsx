@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 
 import styles from "./Select.module.scss";
 
-const Select = ({ multiple, value, onChange, options }) => {
+const Select = ({ multiple, value, onChange, options, disabled }) => {
    const [isOpen, setIsOpen] = useState(false);
    const [highlightedIndex, setHighlightedIndex] = useState(0);
 
    const openSelectHandler = () => {
+      if (disabled) return;
       setIsOpen((prev) => !prev);
    };
 
@@ -55,11 +56,12 @@ const Select = ({ multiple, value, onChange, options }) => {
             key={v.value}
             onClick={(e) => {
                e.stopPropagation();
-               selectOption(v)
+               selectOption(v);
             }}
-            className={styles['option-badge']}
+            className={styles["option-badge"]}
          >
-            {v.label}<span className={styles["remove-btn"]}>&times;</span>
+            {v.label}
+            <span className={styles["remove-btn"]}>&times;</span>
          </button>
       ));
    };
@@ -67,11 +69,15 @@ const Select = ({ multiple, value, onChange, options }) => {
    return (
       <div onClick={openSelectHandler} onBlur={closeSelectHandler} tabIndex={0} className={styles["container"]}>
          <span className={styles["value"]}>{multiple ? renderValueForMultiple() : value?.label}</span>
-         <button onClick={clearOptionsHandler} className={styles["clear-btn"]}>
-            &times;
-         </button>
-         <div className={styles["divider"]}></div>
-         <div className={styles["caret"]}></div>
+         {disabled ? null : (
+            <>
+               <button onClick={clearOptionsHandler} className={styles["clear-btn"]}>
+                  &times;
+               </button>
+               <div className={styles["divider"]}></div>
+               <div className={styles["caret"]}></div>
+            </>
+         )}
          <ul className={`${styles["options"]} ${isOpen ? styles["show"] : ""} `}>
             {options.map((option, index) => (
                <li
