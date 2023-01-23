@@ -40,6 +40,7 @@ const Select = ({ multiple, value, onChange, options, disabled }) => {
    const selectOptionHandler = (option) => (e) => {
       e.stopPropagation();
       selectOption(option);
+      closeSelectHandler();
    };
 
    const isOptionSelected = (option) => {

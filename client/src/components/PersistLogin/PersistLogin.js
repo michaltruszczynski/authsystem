@@ -37,28 +37,6 @@ const PersistLogin = () => {
 
    let content = null;
 
-   // if ((isUninitialized || isLoading) && !checkCompleted) {
-   //    console.log('dupa', isUninitialized, isLoading)
-   //    content =  <Loading />
-   // }
-
-   // console.log('dupa', isUninitialized, isLoading, checkCompleted)
-
-   // if (isLoading) {
-   //    console.log('[Persist login] 1')
-   //    content =  <Loading />
-   // }
-
-   //  if (isUninitialized && !checkCompleted) {
-   //    console.log('[Persist login] 2')
-   //    content =  <Loading />
-   // }
-
-   // if (checkCompleted) {
-   //    console.log('[Persist login] 3')
-   //    content = <Outlet />
-   // }
-   console.log('dupa', isUninitialized, isLoading, checkCompleted, effectRan.current, accessToken)
    if (!persist) {
       // persist: no
       console.log("no persist");

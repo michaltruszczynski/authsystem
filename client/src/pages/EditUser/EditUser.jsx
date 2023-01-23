@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
-import { useGetUserQuery } from "../../features/users/userApiSlice";
+import { useDispatch } from "react-redux";
 import Loading from "../../components/UI/Loading/Loading";
 import Select from "../../components/Select/Select";
 import Button from "./Button/Button";
+
+import { useGetUserQuery, usePutUserMutation } from "../../features/users/userApiSlice";
+import { useRefreshMutation} from '../../features/auth/authApiSlice';
+
+import { showSpinner, closeSpinner } from "../../features/app/appSlice";
 
 import styles from "./EditUser.module.scss";
 
@@ -39,10 +43,13 @@ const UserDetails = () => {
    const [isEditing, setIsEditing] = useState(false);
    const [inputTouched, setInputTouched] = useState(false);
    const [userRole, setUserRole] = useState(null);
+   const [putUser] = usePutUserMutation();
    const navigate = useNavigate();
+   const dispatch = useDispatch();
    const { id } = useParams();
 
    const { data: user, isFetching, isLoading, refetch } = useGetUserQuery(id);
+   const [refresh] = useRefreshMutation();
 
    const selectRoleChangeHandler = (val) => {
       setUserRole(val);
@@ -51,8 +58,23 @@ const UserDetails = () => {
       }
    };
 
-   const handleSubmit = (e) => {
-      e.preventDefault();
+   const handleSubmit = async () => {
+      console.log(userRole);
+      const {email} = user;
+
+
+      try {
+         dispatch(showSpinner);
+         const response = await putUser({userRole: userRole.value, userEmail: email}).unwrap();
+         console.log(response)
+         await refresh().unwrap()
+      } catch (error) {
+         console.log(error);
+      } finally {
+         setIsEditing(false);
+         await refetch();
+         dispatch(closeSpinner);
+      }
    };
 
    const handleIsEditing = () => {
@@ -79,9 +101,9 @@ const UserDetails = () => {
          const { roles } = user;
          setUserRole(getRoleValue(roles[0]));
       }
-   }, [user]);
+   }, [user, isEditing]);
 
-   console.log("[UserDetails] ", user, isLoading, isFetching);
+   // console.log("[UserDetails] ", user, isLoading, isFetching);
 
    if (isLoading || isFetching) return <Loading />;
    if (user) {
@@ -97,13 +119,11 @@ const UserDetails = () => {
                      <div className={styles["form__label"]}>Roles</div>
                      <Select options={USER_ROLE_OPTIONS} value={userRole} onChange={selectRoleChangeHandler} disabled={!isEditing} />
                   </div>
-                  <div>
-                  {(!userRole && inputTouched ) ? <p className={styles["error"]}>Error</p> : <p className={styles["error--non"]}>Error</p>}
-                  </div>
+                  <div>{!userRole && inputTouched ? <p className={styles["error"]}>Error</p> : <p className={styles["error--non"]}>Error</p>}</div>
                   <div className={styles["buttons-container"]}>
                      {isEditing ? (
                         <>
-                           <Button text={"Save"} onClick={handleIsEditing} disabled={!userRole} />
+                           <Button text={"Save"} onClick={handleSubmit} disabled={!userRole} />
                            <Button text={"Cancel"} onClick={cancelEditing} />
                         </>
                      ) : (
