@@ -30,8 +30,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
              try {
                  const { data } = await queryFulfilled
                  console.log(data)
-                 const { accessToken, email, roles } = data
-                 dispatch(setCredentials({ accessToken, email, roles }))
+                 const { accessToken, email, roles, id } = data
+                 dispatch(setCredentials({ accessToken, email, roles, id }))
              } catch (err) {
                  console.log(err)
              }

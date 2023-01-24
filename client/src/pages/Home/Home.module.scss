@@ -1,5 +1,45 @@
 .container {
         max-width: 1024px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 5ppx;
+}
+
+.content {
+        padding: 1rem;
+        max-width: 800px;
+        margin: 0 auto;
+}
+
+.page-heading {
+        font-size: 1.5rem;
+}
+
+.content-heading {
+        font-size: 1.1rem;
+}
+
+.form {
+        &__data {
+                display: grid;
+                grid-template-columns: minmax(max-content, 100px) 1fr;
+                grid-template-rows: repeat(2, 1fr);
+                border: 1px solid black;
+        }
+
+        &__label {
+                padding: 8px;
+                color: #fff;
+                background-color: #3c4856;
+                border: 1px solid black;
+        }
+
+        &__value {
+                padding: 8px;
+                border: 1px solid black;
+                word-break: break-all;
+        }
+}
+
+.information {
+        font-size: 0.8rem;
 }

@@ -1,7 +1,17 @@
+@import "../../abstracts/index";
+
 .container {
         max-width: 1024px;
         margin: 0 auto;
         padding: 5px;
+}
+
+.page-heading {
+        font-size: 1.5rem;
+}
+
+.information {
+        font-size: 0.8rem;
 }
 
 .table-container {
@@ -67,6 +77,19 @@
 
         &--mleft {
                 margin-left: 6px;
+        }
+}
+
+.icon {
+        margin-left: 6px;
+        font-size: 0.8rem;
+
+        &__green {
+                color: $light-green;
+        }
+
+        &__red {
+                color: $inputErrorBorderColor;
         }
 }
 

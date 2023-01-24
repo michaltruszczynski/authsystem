@@ -33,9 +33,9 @@ const LoginPage = () => {
       try {
          const response = await login({ email: email, password: password }).unwrap();
          console.log(response);
-         const {accessToken, roles} = response;
+         const {accessToken, roles, id} = response;
          dispatch(closeSpinner());
-         dispatch(setCredentials({ email, accessToken, roles }))
+         dispatch(setCredentials({ email, accessToken, roles, id }))
          dispatch(setMessage({ message: "You have logged in. Welcome :)", messageDetails: [] }));
          navigate("/");
       } catch (err) {

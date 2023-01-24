@@ -1,6 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useGetUsersQuery } from "../../features/users/userApiSlice";
+import { selectCurrentUserId } from "../../features/auth/authSlice";
 
 import Loading from "../../components/UI/Loading/Loading";
 
@@ -15,15 +17,13 @@ const ROLES = {
 };
 
 const UserList = () => {
-   const { data: users, isLoading, isSuccess, isError, error } = useGetUsersQuery();
-
-   console.log(users, isLoading, isSuccess, isError, error);
+   const { data: users, isLoading, isSuccess } = useGetUsersQuery();
+   const id = useSelector(selectCurrentUserId);
+   console.log(id);
 
    if (isLoading) {
       return <Loading />;
    }
-
-   console.log(users);
 
    if (!users || !users.length) {
       return <p>No users has been found.</p>;
@@ -57,10 +57,17 @@ const UserList = () => {
                <div className={styles["none"]}>Actions</div>
                <div>
                   <span className={styles["role"]}>
-                     <NavLink to={`/edituser/${user._id}`} >View</NavLink>
+                     <NavLink to={`/edituser/${user._id}`}>View</NavLink>
                   </span>
-                  <span className={[styles["role"], styles["role--mleft"]].join(" ")}>
+                  {/* <span className={[styles["role"], styles["role--mleft"]].join(" ")}>
                      <NavLink to={`/edituser/${user._id}`}>Edit</NavLink>
+                  </span> */}
+                  <span className={[styles["role--mleft"]].join(" ")}>
+                     {id === user._id ? (
+                        <i className={`fa-solid fa-circle-check ${styles["icon"]} ${styles["icon__green"]}`}></i>
+                     ) : (
+                        <i className={`fa-solid fa-circle-exclamation ${styles["icon"]} ${styles["icon__red"]}`}></i>
+                     )}
                   </span>
                </div>
             </td>
@@ -72,9 +79,8 @@ const UserList = () => {
       return (
          <section className={styles["container"]}>
             <div className={styles["table-container"]}>
-               <h1 className={styles["table__heading"]}>Admin Page</h1>
-               <p className={styles["table__description"]}>User list</p>
-
+               <h1 className={styles["page-heading"]}>User list</h1>
+               <p className={styles['information']}>Note: As this is demo app with public access(anyone can register), user can only change its own role. Additionally details of other users are hidden.</p>
                <table className={styles["table"]}>
                   <thead className={styles["column"]}>
                      <tr className={styles["row__heading"]}>

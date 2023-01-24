@@ -50,6 +50,7 @@ const handleRefreshToken = async (req, res) => {
       const accessToken = jwt.sign(
          {
             UserInfo: {
+               id: foundUser._id,
                name: foundUser.name,
                email: foundUser.email,
                roles: roles,
@@ -71,7 +72,7 @@ const handleRefreshToken = async (req, res) => {
          secure: "true",
          maxAge: 24 * 60 * 60 * 1000,
       }); // secure: "true",
-      res.json({ accessToken, roles, email: foundUser.email });
+      res.json({ accessToken, roles, email: foundUser.email, id: foundUser._id });
    });
 };
 

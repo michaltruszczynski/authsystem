@@ -39,6 +39,7 @@ const handleLogin = async (req, res) => {
       const accessToken = jwt.sign(
          {
             UserInfo: {
+               id: foundUser._id,
                email: foundUser.email,
                name: foundUser.name,
                roles: roles,
@@ -74,7 +75,7 @@ const handleLogin = async (req, res) => {
       }); // secure: "true",
 
       // send authorization roles and access token to user
-      res.json({ message: `User ${foundUser.email} is logged in.`, accessToken, roles, email: foundUser.email });
+      res.json({ message: `User ${foundUser.email} is logged in.`, accessToken, roles, email: foundUser.email, id: foundUser._id });
    } else {
       res.status(401).json({ message: "Passord is incorrect" });
    }

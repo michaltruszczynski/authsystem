@@ -8,7 +8,9 @@ import Button from "./Button/Button";
 import { useGetUserQuery, usePutUserMutation } from "../../features/users/userApiSlice";
 import { useRefreshMutation} from '../../features/auth/authApiSlice';
 
-import { showSpinner, closeSpinner } from "../../features/app/appSlice";
+import { showSpinner, closeSpinner, setMessage } from "../../features/app/appSlice";
+
+import { getErrorMessage } from "../../utility/messages";
 
 import styles from "./EditUser.module.scss";
 
@@ -59,9 +61,7 @@ const UserDetails = () => {
    };
 
    const handleSubmit = async () => {
-      console.log(userRole);
       const {email} = user;
-
 
       try {
          dispatch(showSpinner);
@@ -70,6 +70,8 @@ const UserDetails = () => {
          await refresh().unwrap()
       } catch (error) {
          console.log(error);
+         const { errorMessage, errorDetails } = getErrorMessage(error);
+         dispatch(setMessage({ message: errorMessage, messageDetails: errorDetails }));
       } finally {
          setIsEditing(false);
          await refetch();
@@ -102,8 +104,6 @@ const UserDetails = () => {
          setUserRole(getRoleValue(roles[0]));
       }
    }, [user, isEditing]);
-
-   // console.log("[UserDetails] ", user, isLoading, isFetching);
 
    if (isLoading || isFetching) return <Loading />;
    if (user) {
@@ -141,36 +141,3 @@ const UserDetails = () => {
 };
 
 export default UserDetails;
-
-// const [selectValue1, setSelectValue1] = useState([options[0]]);
-// const [selectValue2, setSelectValue2] = useState(options[0]);
-// const options = [
-//    {
-//       label: "First",
-//       value: 1,
-//    },
-//    {
-//       label: "Second",
-//       value: 2,
-//    },
-//    {
-//       label: "Third",
-//       value: 3,
-//    },
-//    {
-//       label: "Fourth",
-//       value: 4,
-//    },
-//    {
-//       label: "Fifth",
-//       value: 5,
-//    },
-// ];
-
-{
-   /* <div>
-   <Select multiple options={options} value={selectValue1} onChange={(val) => setSelectValue1(val)} />
-   <br />
-   <Select options={options} value={selectValue2} onChange={(val) => setSelectValue2(val)} />
-</div>; */
-}

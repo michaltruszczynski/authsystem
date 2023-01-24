@@ -6,24 +6,45 @@ const ROLES = {
    Admin: 5150,
 };
 
-const getAllUsers = async (req, res) => {
-   const users = await User.find({}, "_id name email roles").lean();
-   const foundUsers = users.map((user) => {
-      user.roles = Object.values(user.roles).filter(Boolean);
-      return user;
-   });
-   if (!users) return res.status(204).json({ message: "No users found" });
-   res.json(foundUsers);
+const getAllUsers = async (req, res, next) => {
+   try {
+      const users = await User.find({}, "_id name email roles").lean();
+      if (!users) {
+         return res.status(204).json({ message: "No users found" });
+      }
+
+      const foundUsers = users.map((user) => {
+         user.roles = Object.values(user.roles).filter(Boolean);
+         return user;
+      });
+
+      res.json(foundUsers);
+   } catch (error) {
+      if (!error.statusCode) {
+         error.statusCode = 500;
+      }
+      next(error);
+   }
 };
 
-const deleteUser = async (req, res) => {
-   if (!req?.body?.id) return res.status(400).json({ message: "User ID required" });
-   const user = await User.findOne({ _id: req.body.id }).exec();
-   if (!user) {
-      return res.status(204).json({ message: `User ID ${req.body.id} not found` });
+const deleteUser = async (req, res, next) => {
+   try {
+      if (!req?.body?.id) return res.status(400).json({ message: "User ID required" });
+
+      const user = await User.findOne({ _id: req.body.id }).exec();
+
+      if (!user) {
+         return res.status(204).json({ message: `User ID ${req.body.id} not found` });
+      }
+      const result = await user.deleteOne({ _id: req.body.id });
+
+      res.json(result);
+   } catch (error) {
+      if (!error.statusCode) {
+         error.statusCode = 500;
+      }
+      next(error);
    }
-   const result = await user.deleteOne({ _id: req.body.id });
-   res.json(result);
 };
 
 const getUser = async (req, res) => {
@@ -39,32 +60,36 @@ const getUser = async (req, res) => {
    res.json(user);
 };
 
-const putUser = async (req, res) => {
-   console.log("req.body.roles", req.body);
-   console.log("req.user", req.email);
+const putUser = async (req, res, next) => {
    const { userEmail, userRole } = req.body;
 
-   if (userEmail !== req.email) {
-      return res.sendStatus(401);
+   try {
+      if (userEmail !== req.email) {
+         const error = new Error("You are not authorized to perform this operation.");
+         error.statusCode = 401;
+         throw error;
+      }
+
+      const createUserRoles = (rolesObj, roles) => {
+         const keys = Object.keys(rolesObj);
+         const rolesObjMod = {};
+         keys.forEach((key) => {
+            console.log("key: ", key);
+            rolesObjMod[rolesObj[key]] = { [key]: rolesObj[key] };
+         });
+
+         return rolesObjMod[roles];
+      };
+
+      const response = await User.findOneAndUpdate({ email: userEmail }, { $set: { roles: createUserRoles(ROLES, userRole) } });
+
+      res.json({ message: "User updated.", status: "Success." });
+   } catch (error) {
+      if (!error.statusCode) {
+         error.statusCode = 500;
+      }
+      next(error);
    }
-
-   const createUserRoles = (rolesObj, roles) => {
-      const keys = Object.keys(rolesObj);
-      const rolesObjMod = {};
-      keys.forEach((key) => {
-         console.log("key: ",key)
-         rolesObjMod[rolesObj[key]] = { [key]: rolesObj[key] };
-      });
-      console.log('rolesObjMod: ', rolesObjMod)
-      console.log('roles: ', roles)
-
-      return rolesObjMod[roles];
-   };
-   console.log('dupa', createUserRoles(ROLES, userRole));
-   const response = await User.findOneAndUpdate({ email: userEmail }, { $set: { roles: createUserRoles(ROLES, userRole) } });
-   console.log(response);
-
-   res.json({ message: "ok" });
 };
 module.exports = {
    getAllUsers,
