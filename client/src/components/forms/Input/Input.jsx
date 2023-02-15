@@ -16,7 +16,7 @@ const inputErrorTypes = {
    CUSTOM: "CUSTOM",
 };
 
-const Input = ({ inputType, placeholder, name, validators, showError }) => {
+const Input = ({ inputType, placeholder, name, validators, showError, type }) => {
    const [touched, setTouched] = useState(false);
    const [focus, setFocus] = useState(false);
    const { data, errors, setInputValue, registerInput } = useContext(FormContext);
@@ -78,9 +78,9 @@ const Input = ({ inputType, placeholder, name, validators, showError }) => {
                onFocus={inputOnFocusHandler}
                onBlur={inputOnBlurHanlder}
                className={styles["input__field"]}
-               type="text"
                placeholder={placeholder}
                name={name}
+               type={type}
             />
          </div>
          {showError === inputErrorTypes.BASIC ? (
