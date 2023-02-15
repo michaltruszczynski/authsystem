@@ -17,10 +17,8 @@ const LogoutButton = ({onClick}) => {
       try {
          dispatch(showSpinner())
          const response = await sendLogout().unwrap();
-         console.log(response);
          dispatch(closeSpinner())
       } catch (err) {
-         console.log(err);
          dispatch(closeSpinner())
          const { errorMessage, errorDetails } = getErrorMessage(err);
          dispatch(setMessage({ message: errorMessage, messageDetails: errorDetails }));

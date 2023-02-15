@@ -66,10 +66,8 @@ const UserDetails = () => {
       try {
          dispatch(showSpinner);
          const response = await putUser({userRole: userRole.value, userEmail: email}).unwrap();
-         console.log(response)
          await refresh().unwrap()
       } catch (error) {
-         console.log(error);
          const { errorMessage, errorDetails } = getErrorMessage(error);
          dispatch(setMessage({ message: errorMessage, messageDetails: errorDetails }));
       } finally {
