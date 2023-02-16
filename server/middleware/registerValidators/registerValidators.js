@@ -12,7 +12,6 @@ const userRegisterValidation = () => {
             .withMessage('Please enter a valid email.')
             .custom(async (value, { req }) => {
                 const userDoc = await User.findOne({ email: value });
-                    console.log(userDoc);
                     if (userDoc) {
                             return Promise.reject('Email already exists. Please enter different one.');
                     }
@@ -35,8 +34,6 @@ const userRegisterValidation = () => {
         body('confirmPassword')
             .trim()
             .custom((value, { req }) => {
-                console.log('dupa')
-                console.log(typeof (value), req.body.password)
                 if (value !== req.body.password) {
                     throw new Error('Passwords do not match.')
                 }

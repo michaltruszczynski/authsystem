@@ -4,7 +4,6 @@ const defaultErrorMessage = 'Input data validation failed';
 
 const dataErrorHandler = (req, res, next) => {
       const errors = validationResult(req);
-      console.log('errors', errors.isEmpty(), errors);
 
       if (errors.isEmpty()) return next();
 

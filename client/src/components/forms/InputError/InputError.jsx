@@ -15,7 +15,6 @@ const InputError = ({ name, touched, focus }) => {
 
    let errorMessage = <li className={errorClasses.join(" ")}></li>;
 
-   //    if (touched) {
    if (!isValid && touched && focus) {
       errorClasses.push(styles["error__message--red"]);
       errorClasses.push(styles["error__message--visible"]);
@@ -26,7 +25,6 @@ const InputError = ({ name, touched, focus }) => {
             {error.message}
          </li>
       )));
-   //    }
 
    return <ul className={styles["error__list"]}>{errorMessage}</ul>;
 };

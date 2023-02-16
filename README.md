@@ -1,4 +1,4 @@
-# AuthSystem
+b# AuthSystem
 MERN stack project. Authentication and authorization system which can be embedded in any single page appplication which requires such functionality.
 System allows users:
 - to register with own email and password or with google account,
@@ -61,7 +61,7 @@ REACT_APP_GOOGLE_OAUTH_ENDPOINT</br>
 REACT_APP_GOOGLE_OAUTH_REDIRECT</br>
 REACT_APP_API</br>
 
-Backend:
+Backend:</br>
 ACCESS_TOKEN_SECRET</br>
 REFRESH_TOKEN_SECRET</br>
 DATABASE_URI</br>

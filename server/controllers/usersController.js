@@ -1,4 +1,4 @@
-const User = require("../model/User");
+const User = require('../model/User');
 
 const ROLES = {
    User: 2001,
@@ -8,13 +8,18 @@ const ROLES = {
 
 const getAllUsers = async (req, res, next) => {
    try {
-      const users = await User.find({}, "_id name email roles").lean();
+      const { userId } = req;
+      const users = await User.find({}, '_id name email roles').lean();
       if (!users) {
-         return res.status(204).json({ message: "No users found" });
+         return res.status(204).json({ message: 'No users found' });
       }
 
       const foundUsers = users.map((user) => {
          user.roles = Object.values(user.roles).filter(Boolean);
+         if (user._id.toString() !== userId.toString()) {
+            user.name = user.name.slice(0, 1).padEnd(user.name.length - 1, '*');
+            user.email = user.email.slice(0, 1).padEnd(user.email.length - 1, '*');
+         }
          return user;
       });
 
@@ -29,7 +34,7 @@ const getAllUsers = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
    try {
-      if (!req?.body?.id) return res.status(400).json({ message: "User ID required" });
+      if (!req?.body?.id) return res.status(400).json({ message: 'User ID required' });
 
       const user = await User.findOne({ _id: req.body.id }).exec();
 
@@ -48,16 +53,29 @@ const deleteUser = async (req, res, next) => {
 };
 
 const getUser = async (req, res) => {
-   console.log(!req?.params?.id);
-   if (!req?.params?.id) return res.status(400).json({ message: "User ID required" });
-   const user = await User.findOne({ _id: req.params.id }, "_id name email roles").lean();
-   console.log(user);
-   if (!user) {
-      return res.status(204).json({ message: `User ID ${req.params.id} not found` });
-   }
+   try {
+      if (!req?.params?.id) {
+         return res.status(400).json({ message: 'User ID required' });
+      }
+      const { userId } = req;
+      const requestedUserData = await User.findOne({ _id: req.params.id }, '_id name email roles').lean();
 
-   user.roles = Object.values(user.roles).filter(Boolean);
-   res.json(user);
+      if (!requestedUserData) {
+         return res.status(204).json({ message: `User ID ${req.params.id} not found` });
+      }
+      if (requestedUserData._id.toString() !== userId) {
+         requestedUserData.name = requestedUserData.name.slice(0, 1).padEnd(requestedUserData.name.length - 1, '*');
+         requestedUserData.email = requestedUserData.email.slice(0, 1).padEnd(requestedUserData.email.length - 1, '*');
+      }
+
+      requestedUserData.roles = Object.values(requestedUserData.roles).filter(Boolean);
+      res.json(requestedUserData);
+   } catch (error) {
+      if (!error.statusCode) {
+         error.statusCode = 500;
+      }
+      next(error);
+   }
 };
 
 const putUser = async (req, res, next) => {
@@ -65,7 +83,7 @@ const putUser = async (req, res, next) => {
 
    try {
       if (userEmail !== req.email) {
-         const error = new Error("You are not authorized to perform this operation.");
+         const error = new Error('You are not authorized to perform this operation.');
          error.statusCode = 401;
          throw error;
       }
@@ -74,7 +92,6 @@ const putUser = async (req, res, next) => {
          const keys = Object.keys(rolesObj);
          const rolesObjMod = {};
          keys.forEach((key) => {
-            console.log("key: ", key);
             rolesObjMod[rolesObj[key]] = { [key]: rolesObj[key] };
          });
 
@@ -83,7 +100,7 @@ const putUser = async (req, res, next) => {
 
       const response = await User.findOneAndUpdate({ email: userEmail }, { $set: { roles: createUserRoles(ROLES, userRole) } });
 
-      res.json({ message: "User updated.", status: "Success." });
+      res.json({ message: 'User updated.', status: 'Success.' });
    } catch (error) {
       if (!error.statusCode) {
          error.statusCode = 500;

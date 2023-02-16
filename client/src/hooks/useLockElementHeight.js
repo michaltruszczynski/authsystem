@@ -2,7 +2,6 @@ const useLockElementHeight = (elementRef) => {
 
    const lockElementHeight = () => {
       if (!elementRef.current) return;
-      console.log(window.innerHeight)
       if (window.innerHeight > elementRef.current.clientHeight) return;
       elementRef.current.style.height = `${window.innerHeight}px`;
    };

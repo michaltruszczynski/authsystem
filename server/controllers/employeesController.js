@@ -19,7 +19,6 @@ const createNewEmployee = async (req, res) => {
          firstname: req.body.firstname,
          lastname: req.body.lastname,
       });
-      console.log(result);
       res.status(201).json(result);
    } catch (err) {
       console.log(err);
@@ -41,11 +40,6 @@ const updateEmployee = async (req, res) => {
 
    if (req.body?.firstname) employee.firstname = req.body.firstname;
    if (req.body?.lastname) employee.lastname = req.body.lastname;
-
-   // TODO sorting to be checked
-   //    data.setEmployees(
-   //       unsortedArray.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0))
-   //    );
 
    const result = await employee.save();
    res.json(result);

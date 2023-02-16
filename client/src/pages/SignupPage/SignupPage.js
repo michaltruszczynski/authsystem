@@ -28,7 +28,6 @@ const Signup = () => {
       dispatch(showSpinner());
       try {
          const response = await register({ name, email, password, confirmPassword }).unwrap();
-         console.log(response);
          dispatch(closeSpinner());
          dispatch(setMessage({ message: 'You have been successfully registered.', messageDetails: ['Please signin.'] }));
          navigate('/login');

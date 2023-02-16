@@ -19,7 +19,6 @@ const PersistLogin = () => {
          // React 18 Strict Mode
 
          const verifyRefreshToken = async () => {
-            console.log("verifying refresh token");
             try {
                await refresh().unwrap();
             } catch (err) {
@@ -31,38 +30,20 @@ const PersistLogin = () => {
 
          if (!accessToken && persist) verifyRefreshToken();
       }
-      console.log("[Persist login] useEffect");
       return () => (effectRan.current = true);
    }, []);
 
    let content = null;
 
    if (!persist) {
-      // persist: no
-      console.log("no persist");
       content = <Outlet />;
    } else if (isLoading) {
-      //persist: yes, token: no
-      console.log("loading");
       content = <Loading />;
    } else if (isError) {
-      //persist: yes, token: no
-      console.log("error");
       content = <Outlet />;
-      // content = (
-      //     <p className='errmsg'>
-      //         {`${error?.data?.message} - `}
-      //         <Link to="/login">Please login again</Link>.
-      //     </p>
-      // )
    } else if (isSuccess && checkCompleted) {
-      //persist: yes, token: yes
-      console.log("success");
       content = <Outlet />;
    } else if (accessToken && isUninitialized) {
-      //persist: yes, token: yes
-      console.log("token and uninit");
-      console.log(isUninitialized);
       content = <Outlet />;
    } else if(!accessToken && checkCompleted) {
       content = <Outlet />

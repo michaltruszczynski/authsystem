@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import FormContainer from '../../components/forms/FormContainer/FormContainer';
@@ -23,23 +23,19 @@ const LoginPage = () => {
    const [login] = useLoginMutation();
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const location = useLocation();
 
-   console.log(location);
    const loginHandler = async (data, setInputValue) => {
       const { email, password } = data;
 
       dispatch(showSpinner());
       try {
          const response = await login({ email: email, password: password }).unwrap();
-         console.log(response);
          const { accessToken, roles, id } = response;
          dispatch(closeSpinner());
          dispatch(setCredentials({ email, accessToken, roles, id }));
          dispatch(setMessage({ message: 'You have logged in. Welcome :)', messageDetails: [] }));
          navigate('/');
       } catch (err) {
-         console.log(err);
          dispatch(closeSpinner());
          const { errorMessage, errorDetails } = getErrorMessage(err);
          dispatch(setMessage({ message: errorMessage, messageDetails: errorDetails }));
