@@ -1,4 +1,4 @@
-b# AuthSystem
+# AuthSystem
 MERN stack project. Authentication and authorization system which can be embedded in any single page appplication which requires such functionality.
 System allows users:
 - to register with own email and password or with google account,
