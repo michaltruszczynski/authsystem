@@ -11,6 +11,8 @@ import RequireAuth from "./components/RequireAuth/RequireAuth";
 import UserList from "./pages/UserList/UserList";
 import PersistLogin from "./components/PersistLogin/PersistLogin";
 import EditUser from "./pages/EditUser/EditUser";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
 
 const ROLES = {
    User: 2001,
@@ -26,6 +28,8 @@ function App() {
                <Route index element={<Home />} />
                <Route path="login" element={<LoginPage />} />
                <Route path="signup" element={<SignupPage />} />
+               <Route path="resetpassword" element={<ResetPassword />} />
+               <Route path="changepassword" element={<ChangePassword />} />
                <Route path="unauthorized" element={<Unauthorized />} />
 
                <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Editor, ROLES.User]} />}>

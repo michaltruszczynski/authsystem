@@ -9,7 +9,6 @@ const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
-const { connect } = require("http2");
 const PORT = process.env.PORT || 3500;
 
 //connect DB
@@ -25,7 +24,7 @@ app.use(cors(corsOptions));
 // built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
 
-// built-in middleware for json 
+// built-in middleware for json
 app.use(express.json());
 
 //middleware for cookies
@@ -41,6 +40,7 @@ app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
+
 
 app.use('/users', verifyJWT,  require('./routes/api/users'));
 

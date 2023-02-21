@@ -1,8 +1,15 @@
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const sendGridMail = require('@sendgrid/mail');
+const handlebars = require('handlebars');
+const fs = require('fs');
+const path = require('path');
 const User = require('../model/User');
+const ResetPwdToken = require('../model/ResetPwdToken');
 const { getGoogleOauthToken, getGoogleUser } = require('../services/googleService');
 
+sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
 const handleLogin = async (req, res) => {
    try {
       const cookies = req.cookies;
@@ -119,7 +126,8 @@ const googleOauthHandler = async (req, res, next) => {
 
       //case no use in db new user must be created
       if (!foundUser) {
-         const hashedPwd = await bcrypt.hash('1234567890', 10);
+         const randomPwd = crypto.randomBytes(18).toString('hex');
+         const hashedPwd = await bcrypt.hash(randomPwd, 10);
          //create and store the new user
 
          const newUser = await User.create({
@@ -127,6 +135,7 @@ const googleOauthHandler = async (req, res, next) => {
             email: email,
             password: hashedPwd,
             roles: { User: 2001 },
+            registeredFrom: 'google',
          });
 
          //create refreshtoken
@@ -150,14 +159,97 @@ const googleOauthHandler = async (req, res, next) => {
 
          return res.redirect(`${process.env.CLIENT_ORIGIN}`);
       }
-
    } catch (err) {
       console.log('Failed to authorize Google User', err);
       res.redirect(`${process.env.CLIENT_ORIGIN}/oauth/error`);
    }
 };
 
+const resetPasswordRequest = async (req, res, next) => {
+   try {
+      const { email } = req.body;
+      const user = await User.findOne({ email: email });
+
+      if (!user) {
+         return res.status(404).send({ message: 'User does not exists' });
+      }
+
+      const token = await ResetPwdToken.findOne({ userId: user._id });
+
+      if (token) {
+         const response = await token.deleteOne();
+         console.log('Delete reset token response: ', response);
+      }
+
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      const hashedResetToken = await bcrypt.hash(resetToken, 10);
+
+      const newResetToken = new ResetPwdToken({
+         userId: user._id,
+         token: hashedResetToken,
+         createdAt: Date.now(),
+      });
+
+      await newResetToken.save();
+      const link = `${process.env.CLIENT_ORIGIN}/changepassword?token=${resetToken}&id=${user._id}`;
+
+      const source = fs.readFileSync(path.join(__dirname, '../utility/email/resetPasswordRequest.hbs'), 'utf8');
+      const compiledTemplate = handlebars.compile(source);
+
+      function getMessage(user, link) {
+         console.log(user.email);
+         return {
+            to: user.email,
+            from: process.env.SENDGRID_SENDER,
+            subject: 'AuthSystem Reset Password.',
+            html: compiledTemplate({ link }),
+         };
+      }
+
+      await sendGridMail.send(getMessage(user, link));
+
+      res.json({ message: 'Reset email request processed successully.' });
+   } catch (error) {
+      console.log(error);
+      next(error);
+   }
+};
+
+const changePassword = async (req, res, next) => {
+   try {
+      const { password, token, id } = req.body;
+      const passwordResetToken = await ResetPwdToken.findOne({ userId: id });
+      console.log(token)
+      console.log(passwordResetToken.token)
+      if (!passwordResetToken) {
+         console.log('dupa1')
+         return res.status(401).send({ message: 'Invalid or expired password reset token' });
+      }
+
+      const isValid = await bcrypt.compare(token, passwordResetToken.token);
+console.log(isValid)
+      if (!isValid) {
+         console.log('dupa2')
+         return res.status(401).send({ message: 'Invalid or expired password reset token' });
+      }
+
+      const hash = await bcrypt.hash(password, 10);
+
+      await User.updateOne({ _id: id }, { $set: { password: hash } }, { new: true });
+
+      await passwordResetToken.deleteOne();
+
+      console.log(password, token, id);
+      res.json({ message: 'Password changed.' });
+   } catch (error) {
+      console.log(error);
+      next(error);
+   }
+};
+
 module.exports = {
    handleLogin,
    googleOauthHandler,
+   resetPasswordRequest,
+   changePassword,
 };
