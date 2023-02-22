@@ -15,11 +15,15 @@ const handleNewUser = async (req, res) => {
          email: email,
          password: hashedPwd,
          roles: { User: 2001 },
-         registeredFrom: 'app'
+         registeredFrom: 'App',
+         isPasswordSet: true,
       });
       res.status(201).json({ message: `New user ${email} created` });
-   } catch (err) {
-      res.status(500).json({ message: err.message });
+   } catch (error) {
+      if (!error.statusCode) {
+         error.statusCode = 500;
+      }
+      next(error);
    }
 };
 

@@ -83,7 +83,7 @@ const UserList = () => {
             <div className={styles['table-container']}>
                <h1 className={styles['page-heading']}>User list</h1>
                <p className={styles['information']}>
-                  Note: As this is demo app with public access(anyone can register), user can only change its own role. Additionally details of other users are hidden.
+                  Note: As this is demo app with public access(anyone can register), user can only change its own role. Details of other users are hidden.
                </p>
                <table className={styles['table']}>
                   <thead className={styles['column']}>

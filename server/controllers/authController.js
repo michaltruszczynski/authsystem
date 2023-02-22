@@ -63,12 +63,26 @@ const handleLogin = async (req, res) => {
          }); // secure: "true",
 
          // send authorization roles and access token to user
-         res.json({ message: `User ${foundUser.email} is logged in.`, accessToken, roles, email: foundUser.email, id: foundUser._id });
+         res.json({
+            message: `User ${foundUser.email} is logged in.`,
+            accessToken,
+            roles,
+            email: foundUser.email,
+            id: foundUser._id,
+            registeredFrom: foundUser.registeredFrom,
+            isPasswordSet: foundUser.isPasswordSet,
+         });
       } else {
-         res.status(401).json({ message: 'Passord is incorrect' });
+         if (foundUser.isPasswordSet) {
+            return res.status(401).json({ message: 'Passord is incorrect' });
+         }
+         return res.status(401).json({ message: 'Password was not set.', data: [{msg: 'You have registered with Google account.'}, {msg: 'Local password was not set.'}, {msg: 'Please use reset password to set password for this app.'}] });
       }
    } catch (error) {
-      res.status(500).json({ message: err.message });
+      if (!error.statusCode) {
+         error.statusCode = 500;
+      }
+      next(error);
    }
 };
 
@@ -135,7 +149,8 @@ const googleOauthHandler = async (req, res, next) => {
             email: email,
             password: hashedPwd,
             roles: { User: 2001 },
-            registeredFrom: 'google',
+            registeredFrom: 'Google',
+            isPasswordSet: false,
          });
 
          //create refreshtoken
@@ -178,7 +193,6 @@ const resetPasswordRequest = async (req, res, next) => {
 
       if (token) {
          const response = await token.deleteOne();
-         console.log('Delete reset token response: ', response);
       }
 
       const resetToken = crypto.randomBytes(32).toString('hex');
@@ -197,7 +211,6 @@ const resetPasswordRequest = async (req, res, next) => {
       const compiledTemplate = handlebars.compile(source);
 
       function getMessage(user, link) {
-         console.log(user.email);
          return {
             to: user.email,
             from: process.env.SENDGRID_SENDER,
@@ -210,7 +223,9 @@ const resetPasswordRequest = async (req, res, next) => {
 
       res.json({ message: 'Reset email request processed successully.' });
    } catch (error) {
-      console.log(error);
+      if (!error.statusCode) {
+         error.statusCode = 500;
+      }
       next(error);
    }
 };
@@ -219,30 +234,28 @@ const changePassword = async (req, res, next) => {
    try {
       const { password, token, id } = req.body;
       const passwordResetToken = await ResetPwdToken.findOne({ userId: id });
-      console.log(token)
-      console.log(passwordResetToken.token)
+
       if (!passwordResetToken) {
-         console.log('dupa1')
          return res.status(401).send({ message: 'Invalid or expired password reset token' });
       }
 
       const isValid = await bcrypt.compare(token, passwordResetToken.token);
-console.log(isValid)
+
       if (!isValid) {
-         console.log('dupa2')
          return res.status(401).send({ message: 'Invalid or expired password reset token' });
       }
 
       const hash = await bcrypt.hash(password, 10);
 
-      await User.updateOne({ _id: id }, { $set: { password: hash } }, { new: true });
+      await User.updateOne({ _id: id }, { $set: { password: hash, isPasswordSet: true } }, { new: true });
 
       await passwordResetToken.deleteOne();
 
-      console.log(password, token, id);
       res.json({ message: 'Password changed.' });
    } catch (error) {
-      console.log(error);
+      if (!error.statusCode) {
+         error.statusCode = 500;
+      }
       next(error);
    }
 };

@@ -22,6 +22,9 @@ const userSchema = new Schema({
         refreshToken: [String],
         registeredFrom: {
                 type: String
+        },
+        isPasswordSet: {
+                type: Boolean
         }
 });
 

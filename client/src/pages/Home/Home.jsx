@@ -7,7 +7,7 @@ import { getRoleString } from "../../utility/helpers";
 import styles from "./Home.module.scss";
 
 const Home = () => {
-   const { email, roles } = useSelector(selectCurrentUser);
+   const { email, roles, isPasswordSet, registeredFrom } = useSelector(selectCurrentUser);
    
    return (
       <section className={styles["container"]}>
@@ -21,6 +21,10 @@ const Home = () => {
                      <div className={styles["form__value"]}>{email}</div>
                      <div className={styles["form__label"]}>Roles</div>
                      <div className={styles["form__value"]}>{getRoleString(roles)}</div>
+                     <div className={styles["form__label"]}>Registered using</div>
+                     <div className={styles["form__value"]}>{registeredFrom === 'App' ? 'Registration form' : 'Google'}</div>
+                     <div className={styles["form__label"]}>Password set</div>
+                     <div className={styles["form__value"]}>{isPasswordSet ? 'Yes' : 'No'}</div>
                   </div>
                   <p className={styles['information']}>Change your user role to see test pages accessible for other roles (editor, administrator).</p>
                   <p className={styles['information']}>Go to -> <i>User list</i> -> <i>User details</i> to change your user role.</p>

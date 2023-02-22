@@ -29,7 +29,7 @@ const ResetPassword = () => {
       dispatch(showSpinner());
       try {
          const response = await resetpwd({ email: email}).unwrap();
-         dispatch(setMessage({ message: 'Password reset request sent.', messageDetails: ['A password reset message was sent to your email address.'] }));
+         dispatch(setMessage({ message: 'Password reset request sent.', messageDetails: ['A password reset message was sent to your email address.', 'Mail was sent using SendGrid.', 'SendGrid emails may be consideres as spam.', 'Check your spam folder just in case!'] }));
          dispatch(closeSpinner());
          navigate('/');
       } catch (err) {
