@@ -42,10 +42,14 @@ Node, Express, MongoDB, Mongoose
     * Access token is stored in Redux state. Every query to API is send together with authentication header which contains token.
     * If token expires, RTK Query middleware asks for new access token using refresh token.
     * Refresh token (with longer expiry date) is sent using httpOnly, secure cookie.
+    * Refresh token can be used once. If refresh token is used used twice or is incorrect all refresh token are invalidated.
 
 * Reset password:
-    * 
+    * User submits request to reset password.
+    * If user exists email with link to change password form is send. Link contains token and user id as query params.
+    * User submits new password. Backend checks credentials (token) and validate password. If no errors, password is changed.
 
+* Both frontend and backend data validation is implemented.
 
 ## Install Dependencies (frontend & backend)
 Frontend:</br>
