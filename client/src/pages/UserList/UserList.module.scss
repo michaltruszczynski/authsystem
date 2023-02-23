@@ -24,7 +24,7 @@
         width: 100%;
         border-collapse: collapse;
         table-layout: fixed;
-        border: 1px solid black;
+        border: 1px solid $formBlack;
 
         &__heading {
         }
@@ -48,24 +48,24 @@
 
 .row {
         &__heading {
-                background-color: #3c4856;
-                color: white;
+                background-color: $formLabelBackgroundColor;
+                color: $whiteFont;
         }
 
         &__item {
                 padding: 0.2rem 0.4rem;
-                border: 1px solid black;
+                border: 1px solid $formBlack;
                 text-align: center;
         }
 
         &--bgcolor {
-                background-color: #e6f4f1;
+                background-color: $formTextBackgroundColor;
         }
 }
 
 .column {
         padding: 0.5rem;
-        border: 1px solid black;
+        border: 1px solid $formBlack;
 }
 
 .none {

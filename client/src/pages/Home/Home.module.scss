@@ -1,3 +1,5 @@
+@import "../../abstracts/index";
+
 .container {
         max-width: 1024px;
         margin: 0 auto;
@@ -23,19 +25,19 @@
                 display: grid;
                 grid-template-columns: minmax(max-content, 100px) 1fr;
                 grid-template-rows: repeat(2, 1fr);
-                border: 1px solid black;
+                border: 1px solid $formBlack;
         }
 
         &__label {
                 padding: 8px;
-                color: #fff;
-                background-color: #3c4856;
-                border: 1px solid black;
+                color: $whiteFont;
+                background-color: $formLabelBackgroundColor;
+                border: 1px solid $formBlack;
         }
 
         &__value {
                 padding: 8px;
-                border: 1px solid black;
+                border: 1px solid $formBlack;
                 word-break: break-all;
         }
 }

@@ -2,12 +2,18 @@ $light-green: #659c83;
 $main-dark-blue: #243a6f;
 $grey: #444;
 $whiteFont: #fff;
+$blackMain: #000000;
 
 //container
 $containerBoxShadow: rgba(0, 0, 0, 0.25);
 
 //panel
 $panelBackgroundColor: #21a3f6;
+$panelShadow: #00000040;
+$panelFontPanel: #fff;
+$panelBtnBackgoundColor: #5995fd;
+$panelBtnBackgoundColorHover: #4d84e2;
+$panelBtnBorderColor: #fff;
 
 //input
 $inputFontColor: #333;
@@ -25,20 +31,32 @@ $buttonBackgroundColor: #5995fd;
 $buttonBackgroundHooverColor: #4d84e2;
 $buttonFontColor: #fff;
 
+//select
+$selectBorderColor: #777;
+$selectFocusBorderColor: #00aaff;
+$selectFontColor: #777;
+$selectFontHoverColor: #333;
+$selectBackgroundColor: #ffffff;
+
 //logo icon
 $logoIconColor: #e47373;
 $logoTextColor: #f0f0f0cc;
 
 //footer
 $footerBackgroundColor: #06283d;
-$footerFontColor: rgba(240, 240, 240, 0.8);
+$footerFontColor: #f0f0f0cc;
 
 //navigation
 $navBackgroundColor: #21a3f6;
-$navBoxShadowColor: rgba(31, 38, 135, 0.37);
+$navBoxShadowColor: #1f26875e;
 $navFontColor: #fff;
-$navHooverBgColor:rgb(80, 80, 238);
-$navHooverBgColorMob: rgba(255, 255, 255, 0.25);
+$navHooverBgColor:#5050ee;
+$navHooverBgColorMob: #ffffff40;
+
+// Form
+$formLabelBackgroundColor: #3c4856;
+$formBlack: $blackMain;
+$formTextBackgroundColor: #e6f4f1;
 
 
 

@@ -3,7 +3,8 @@ MERN stack project. Authentication and authorization system which can be embedde
 System allows users:
 - to register with own email and password or with **google account**,
 - to sign in using credentials or **google account**,
-- to manage user roles (user, editor, administrator).
+- to manage user roles (user, editor, administrator),
+- to reset password.
 
 ## Demo
 This application is deployed on Render: https://authsystem-tske.onrender.com
@@ -16,6 +17,8 @@ User role is basic. Editor can access user and also additional resources. Admini
 
 To change role go to -> User List. View user details and edit role.
 For confidential reasons name, email of others users are hidden.
+
+Reset password process is designed with reset email send using SendGrid. Please note that emails send vis SendGrid may be treated as span. Therefore while testing this functionality check your your spam folder.
 
 ## Technology
 Project is created with:</br>
@@ -39,6 +42,10 @@ Node, Express, MongoDB, Mongoose
     * Access token is stored in Redux state. Every query to API is send together with authentication header which contains token.
     * If token expires, RTK Query middleware asks for new access token using refresh token.
     * Refresh token (with longer expiry date) is sent using httpOnly, secure cookie.
+
+* Reset password:
+    * 
+
 
 ## Install Dependencies (frontend & backend)
 Frontend:</br>
@@ -69,4 +76,5 @@ GOOGLE_OAUTH_CLIENT_ID</br>
 GOOGLE_OAUTH_CLIENT_SECRET</br>
 GOOGLE_OAUTH_REDIRECT_URL</br>
 CLIENT_ORIGIN</br>
-
+SENDGRID_API_KEY</br>
+SENDGRID_SENDER</br>

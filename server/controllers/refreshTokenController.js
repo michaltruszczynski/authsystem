@@ -1,7 +1,7 @@
 const User = require('../model/User');
 const jwt = require('jsonwebtoken');
 
-const handleRefreshToken = async (req, res) => {
+const handleRefreshToken = async (req, res, next) => {
    try {
       const cookies = req.cookies;
       if (!cookies?.jwt) return res.sendStatus(401);
@@ -9,8 +9,8 @@ const handleRefreshToken = async (req, res) => {
       const refreshToken = cookies.jwt;
       res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true }); // we send new refreshToken cookie with every request for new token, "old" refresh token is removed from coookie
       const foundUser = await User.findOne({ refreshToken }).exec();
-      //Detected refresh token reuse! Refresh tokens can only be used once. When refresh token is used it is deleted.
-      //Code below deals with situations when refreshtoken is used but it has already been deleted.
+      // Detected refresh token reuse! Refresh tokens can only be used once. When refresh token is used it is deleted.
+      // Code below deals with situations when refreshtoken is used but it has already been deleted.
       // not included but you can also store tokens send to client and delete them as well when refresh token is compromized.
       if (!foundUser) {
          jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
@@ -21,8 +21,11 @@ const handleRefreshToken = async (req, res) => {
             const hackedUser = await User.findOne({
                email: decoded.email,
             }).exec();
-            hackedUser.refreshToken = [];
-            const result = await hackedUser.save();
+
+            if (hackedUser) {
+               hackedUser.refreshToken = [];
+               const result = await hackedUser.save();
+            }
          });
          return res.sendStatus(403); // Forbidden
       }

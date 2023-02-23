@@ -22,7 +22,7 @@ const PersistLogin = () => {
             try {
                await refresh().unwrap();
             } catch (err) {
-               console.error(err);
+               console.log(err);
             } finally {
                setCheckCompleted(true);
             }
