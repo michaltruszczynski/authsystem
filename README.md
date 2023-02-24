@@ -4,7 +4,7 @@ System allows users:
 - to register with own email and password or with **google account**,
 - to sign in using credentials or **google account**,
 - to manage user roles (user, editor, administrator),
-- to reset password.
+- to reset password using email send by **SendGrid**.
 
 ## Demo
 This application is deployed on Render: https://authsystem-tske.onrender.com
@@ -18,7 +18,7 @@ User role is basic. Editor can access user and also additional resources. Admini
 To change role go to -> User List. View user details and edit role.
 For confidential reasons name, email of others users are hidden.
 
-Reset password process is designed with reset email send using SendGrid. Please note that emails send vis SendGrid may be treated as span. Therefore while testing this functionality check your your spam folder.
+Reset password process is designed with reset email send using SendGrid. Please note that emails send via SendGrid may be treated as span. Therefore while testing this functionality check your your spam folder.
 
 ## Technology
 Project is created with:</br>
@@ -27,6 +27,7 @@ React, RTK Query, Redux Thunk, React Router, Sass
 
 **Server:**</br>
 Node, Express, MongoDB, Mongoose
+Connects to: SendGrid, GoogleAPI
 
 ## Main Features
  * Functionality
